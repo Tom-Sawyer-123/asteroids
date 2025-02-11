@@ -36,7 +36,7 @@ def main():
     # loop variables
     clock = pygame.time.Clock()
     dt = 0
-    
+    lives = PLAYER_LIVES
     
     
     while True:
@@ -47,8 +47,16 @@ def main():
         updateable.update(dt)
         for asteroid in asteroids:
             if player.collide(asteroid) == True:
-                print("GAME OVER!")
+                player.respawn()
+                lives -= 1
+                if lives == 1:
+                    screen.render("WARNING!!! THIS IS YOUR LAST LIFE!!!")
+                if lives > 0 and lives != 1:
+                    screen.render(f"you have {lives} lives remaining")
+            if lives == 0:
+                screen.render("Game over LOSER!")
                 sys.exit()
+                
         for asteroid in asteroids:
             for shot in shots:
                 if shot.collide(asteroid):
